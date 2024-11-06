@@ -6,11 +6,13 @@ public class MyProgram implements ActionListener {
     JFrame frame;
     JPanel contentPane, outputPane;
 
-    JLabel titleLabel, descriptionLabel, gamesLabel, playersLabel, forLoopDescription, indiTotalStatsLabel, pauseLabel;
+    JLabel titleLabel, descriptionLabel, gamesLabel, playersLabel, indiTotalStatsLabel, pauseLabel;
     JButton playerLockInButton, runButton;
-    JCheckBox individualStatsCheckBox, totalStatsCheckBox, yesPauseCheckBox, noPauseCheckBox;
+    JCheckBox individualStatsCheckBox, pauseCheckBox;
+    boolean individualStats, pause;
     JTextField gamesInput, playersInput;
     JComboBox<String> selectionBox;
+    String[] selections = {"Select...", "Naive", "AI"};
 
     public MyProgram() {
         frame = new JFrame("King of Tokyo Simulation GUI");
@@ -24,9 +26,28 @@ public class MyProgram implements ActionListener {
         descriptionLabel = new JLabel("Run vast amounts of games and get the stats!");
         gamesLabel = new JLabel("How many games do you want?");
         playersLabel = new JLabel("How many players do you want?");
+        indiTotalStatsLabel = new JLabel("Do you want individual stats?");
+        pauseLabel = new JLabel("Do you want a pause between games?");
 
         gamesInput = new JTextField(10);
         playersInput = new JTextField(10);
+
+        runButton = new JButton("Run!");
+        runButton.setActionCommand("Run");
+        runButton.addActionListener(this);
+        contentPane.add(runButton);
+
+        playerLockInButton = new JButton("Lock in players");
+        playerLockInButton = new JButton("PlayerLockIn");
+        playerLockInButton.addActionListener(this);
+        contentPane.add(playerLockInButton);
+
+        individualStatsCheckBox = new JCheckBox("Do you want individual game stats?");
+        individualStatsCheckBox.addActionListener(this);
+
+        pauseCheckBox = new JCheckBox("Do you want to add a pause between games?");
+        pauseCheckBox.addActionListener(this);
+
 
         contentPane.add(titleLabel);
         contentPane.add(descriptionLabel);
@@ -36,9 +57,7 @@ public class MyProgram implements ActionListener {
         contentPane.add(playersLabel);
         contentPane.add(playersInput);
 
-        playerLockInButton = new JButton("Lock in players");
-        playerLockInButton.addActionListener(this);
-        contentPane.add(playerLockInButton);
+
 
         frame.setContentPane(contentPane);
         frame.pack();
@@ -48,6 +67,27 @@ public class MyProgram implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         String eventName = event.getActionCommand();
         System.out.println("action taken: " + eventName);
+        
+        if (eventName.equals("Run")) {
+            gamesAmount = Integer.parseInt(gamesInput.getText());
+            // TO-DO: run Game instance
+        }
+
+    } // end action performed STUFF
+
+
+    //TO-DO: checkbox validation
+    public void itemStateChanged(ItemEvent e) { 
+        // if the state of individual/total stats is changed 
+        if (e.getSource() == individualStaindividualStats = true;t
+                inindividualStats = false;d
+                 } 
+  
+        // if pause status changed        teChange() ==    // yes pause
+                papause = false;u            else
+                // no pause
+      // end item state STUFF alkfjaklkljekqlgkfl           pause = false;
+        } 
     }
 
     private static void runGUI() {
