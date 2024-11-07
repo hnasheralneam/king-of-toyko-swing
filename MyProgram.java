@@ -120,9 +120,22 @@ public class MyProgram implements ActionListener {
             pauseBetweenGames = yesPauseBetweenGames.isSelected();
             getPlayerTypes();
             runSimulation();
-            frame.setContentPane(outputPane);
-            frame.pack();
-            frame.setVisible(true);           
+            if (!individualGameResults) {
+                JButton playAgainButton = new JButton("Run another simulation!");
+                playAgainButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        frame.setContentPane(contentPane);
+                        frame.pack();
+                        frame.setVisible(true);
+                    }
+                });
+                outputPane.add(playAgainButton);
+
+                frame.setContentPane(outputPane);
+                frame.pack();
+                frame.setVisible(true);
+            }
         }
 
     }
@@ -162,29 +175,16 @@ public class MyProgram implements ActionListener {
             }
         }
 
-        String message = "";
+        if (!individualGameResults) {
+            String message = "<html>";
 
-        for (int i = 0; i < playersAmount; i++) {
-            message += "Player " + i + " (" + playerTypes[i] + ") won " + Math.round(((double) wins[i] * 100 / gamesAmount) * 100) / 100.0 + "% games\n";
+            for (int i = 0; i < playersAmount; i++) {
+                message += "Player " + i + " (" + playerTypes[i] + ") won " + Math.round(((double) wins[i] * 100 / gamesAmount) * 100) / 100.0 + "% games<br>";
+            }
+            message += "</html>";
+        
+            resultsLabel.setText(message);     
         }
-    
-        resultsLabel.setText(message); 
-
-
-        // if (individualGameResults) {
-        //     for (int i = 0; i < gamesAmount; i++) {
-        //     Game newGame = new Game(playersAmount, false);
-        //     String result = newGame.getResult();
-        //     JOptionPane.showMessageDialog(parent, "Game " + (i + 1) + " result: " + result);
-        //     if (pauseBetweenGames) {
-        //         try {
-        //         Thread.sleep(1000); // Pause for 1 second between games
-        //         } catch (InterruptedException e) {
-        //         e.printStackTrace();
-        //         }
-        //     }
-        //     }
-        // }
     } 
 
     public void getPlayerTypes() {
