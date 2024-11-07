@@ -1,6 +1,3 @@
-import java.util.Scanner;
-import java.util.Arrays;
-
 public abstract class Player {
     public String playerType;
     public int id;

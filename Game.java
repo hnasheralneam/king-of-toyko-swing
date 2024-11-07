@@ -1,11 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Game {
-    private State GameState = new State();
+    final private State GameState = new State();
     public boolean newToTokyo = true;
     ArrayList<HashMap<Integer, Player>> players = new ArrayList<>(); // references to players
     public boolean firstTime = true; // makes sure you can only get a second turn once
@@ -354,6 +352,26 @@ public class Game {
             }
             System.out.println(" - Fame: " + (int) getFame(i));
         }
+    }
+
+    public String getFinalStats() {
+        String results = "<html>";
+        for (int i = 0; i < players.size(); i++) {
+            if (i == GameState.getCurrentPlayer()) {
+                results += "> ";
+            }
+            if (i == GameState.getInTokyo()) {
+                results += "[IN TOKYO] ";
+            }
+            results += "Player index: " + i;
+            results += " - Health: " + (int) getHealth(i);
+            if ((int) getHealth(i) <= 0) {
+                results += " (DEAD) ";
+            }
+            results += " - Fame: " + (int) getFame(i) + "<br>";
+        }
+        results += determineWinner().playerType + " player won!";
+        return results + "</html>";
     }
 
     private String formattedRoll(int[] dice) {
