@@ -26,10 +26,9 @@ public class MyProgram implements ActionListener {
 
     String[] playerTypes;
 
-    JLabel titleLabel, descriptionLabel, gamesLabel, playersLabel, indiTotalStatsLabel, pauseLabel, resultsLabel;
+    JLabel titleLabel, descriptionLabel, gamesLabel, playersLabel, resultsLabel;
     JButton playerLockInButton, runButton;
     JCheckBox individualStatsCheckBox, pauseCheckBox;
-    boolean individualStats, pause;
     JTextField gamesInput, playersInput;
     String[] selections = {"Naive", "placeholder (the best)", "Kirby", "TAIbleFlip"};
 
@@ -179,7 +178,7 @@ public class MyProgram implements ActionListener {
             String message = "<html>";
 
             for (int i = 0; i < playersAmount; i++) {
-                message += "Player " + i + " (" + playerTypes[i] + ") won " + Math.round(((double) wins[i] * 100 / gamesAmount) * 100) / 100.0 + "% games<br>";
+                message += "Player " + i + " (" + playerTypes[i] + ") won " + wins[i] + " (" + Math.round(((double) wins[i] * 100 / gamesAmount) * 100) / 100.0 + "%) games<br>";
             }
             message += "</html>";
         
