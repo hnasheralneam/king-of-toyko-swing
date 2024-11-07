@@ -26,13 +26,12 @@ public class MyProgram implements ActionListener {
 
     String[] playerTypes;
 
-    JLabel titleLabel, descriptionLabel, gamesLabel, playersLabel, indiTotalStatsLabel, pauseLabel;
+    JLabel titleLabel, descriptionLabel, gamesLabel, playersLabel, indiTotalStatsLabel, pauseLabel, resultsLabel;
     JButton playerLockInButton, runButton;
     JCheckBox individualStatsCheckBox, pauseCheckBox;
     boolean individualStats, pause;
     JTextField gamesInput, playersInput;
-    JComboBox<String> selectionBox;
-    String[] selections = {"Select...", "Naive", "AI"};
+    String[] selections = {"Naive", "placeholder (the best)", "Kirby", "TAIbleFlip"};
 
     public MyProgram() {
         frame = new JFrame("King of Tokyo Simulation GUI");
@@ -97,13 +96,16 @@ public class MyProgram implements ActionListener {
         contentPane.add(pauseBetweenGamesLabel);
         contentPane.add(yesPauseBetweenGames);
         contentPane.add(noPauseBetweenGames);
-
-
         contentPane.add(runButton);
+
+        outputPane = new JPanel();
+        resultsLabel = new JLabel();
+        outputPane.add(resultsLabel);
 
         frame.setContentPane(contentPane);
         frame.pack();
         frame.setVisible(true);
+        
     }
 
     @Override
@@ -118,6 +120,9 @@ public class MyProgram implements ActionListener {
             pauseBetweenGames = yesPauseBetweenGames.isSelected();
             getPlayerTypes();
             runSimulation();
+            frame.setContentPane(outputPane);
+            frame.pack();
+            frame.setVisible(true);           
         }
 
     }
@@ -140,13 +145,11 @@ public class MyProgram implements ActionListener {
         parent.pack();
         parent.setVisible(true);
 
-        
-        int players = 3;
-
-        int aiWins = 0;
+        int[] wins = new int[playerTypes.length]; // tracks the number of wins each player gets
         for (int i = 0; i < gamesAmount; i++) {
-            Game newGame = new Game(players, false);
-            if (newGame.aiWon()) aiWins++;
+            Game newGame = new Game(playerTypes);
+            wins[newGame.getWinner()]++;
+            
             if (individualGameResults) {
                 JOptionPane.showMessageDialog(parent, newGame.getFinalStats());
                 if (pauseBetweenGames) {
@@ -159,11 +162,13 @@ public class MyProgram implements ActionListener {
             }
         }
 
-        if (!individualGameResults) {
-            String message = "AI won " + Math.round(((double) aiWins * 100 / gamesAmount) * 100) / 100.0 + "% games";
-        
-            JOptionPane.showMessageDialog(parent, message);    
+        String message = "";
+
+        for (int i = 0; i < playersAmount; i++) {
+            message += "Player " + i + " (" + playerTypes[i] + ") won " + Math.round(((double) wins[i] * 100 / gamesAmount) * 100) / 100.0 + "% games\n";
         }
+    
+        resultsLabel.setText(message); 
 
 
         // if (individualGameResults) {
@@ -180,15 +185,15 @@ public class MyProgram implements ActionListener {
         //     }
         //     }
         // }
-    }
+    } 
 
     public void getPlayerTypes() {
         playerTypes = new String[playersAmount];
         for (int i = 0; i < playersAmount; i++) {
             int response = JOptionPane.showOptionDialog(null, "Select player type for player " + (i + 1),
             "Player Type Selection", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-            new String[]{"Naive", "AI"}, "Naive");
-            playerTypes[i] = (response == 1) ? "AI" : "Naive";
+            selections, "Naive");
+            playerTypes[i] = selections[response];
         }
     }
 }

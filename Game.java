@@ -8,32 +8,24 @@ public class Game {
     ArrayList<HashMap<Integer, Player>> players = new ArrayList<>(); // references to players
     public boolean firstTime = true; // makes sure you can only get a second turn once
     public boolean hasHumanPlayer = false;
-    public boolean hasAIWon;
+    public int gameWinner;
 
     // Construct the game
-    public Game(int numberOfPlayers, boolean hasPlayer) {
-        hasHumanPlayer = hasPlayer;
+    public Game(String[] players) {
+        int numberOfPlayers = players.length;
+        
+
         // Initialize state
         GameState.setPlayerHealths(new int[numberOfPlayers]);
         GameState.setPlayerFames(new int[numberOfPlayers]);
         GameState.setDice(new int[6]);
 
-        if (hasPlayer == true) {
-            // Create a human controlled player
-            createPlayer("human");
-            numberOfPlayers--;
-        }
-        else {
-            createPlayer("AI");
-            numberOfPlayers--;
-        }
-        // Create AI players to fill up remaining players
-        Player naivePlayer;
-        for (int i = 0; i < numberOfPlayers; i++) {
-            naivePlayer = createPlayer("naive");
-            // PlayerNaive_test newTest = new PlayerNaive_test((PlayerNaive) naivePlayer);
-        }
-        numberOfPlayers++;
+    for (String player : players) { // TO-DO: edit as we add all of the AI players from the big folder (make sure to make them compatible with our game engine)
+        if (player.equals("placeholder (the best)")) {createPlayer("AI");}
+        else if (player.equals("Kirby")) {createPlayer("Kirby");}
+        else if (player.equals("TAIbleFlip")) {createPlayer("TAIbleFlip");}
+        else {createPlayer("naive");}
+    }
 
         // Choose first player
         GameState.setCurrentPlayer((int) (Math.random() * numberOfPlayers));
@@ -81,14 +73,14 @@ public class Game {
 
 
         Player winner = determineWinner();
+        gameWinner = winner.getId();
         // printStats();
-        if (winner.playerType == "AI") hasAIWon = true;
         if (hasHumanPlayer) System.out.println(winner.playerType + " player has won!");
 
     }
 
-    public boolean aiWon() {
-        return hasAIWon;
+    public int getWinner() {
+        return gameWinner;
     }
 
     public int[] runTurn(int playerIndex) {
@@ -213,6 +205,12 @@ public class Game {
         }
         else if (playerType.equals("AI")) {
             newPlayer = new PlayerAI_placeholder(playerIndex);
+        }
+        else if (playerType.equals("Kirby")) {
+            newPlayer = new PlayerAI_Kirby(playerIndex);
+        }
+        else if (playerType.equals("TAIbleFlip")) {
+            newPlayer = new PlayerAI_TAIbleFlip(playerIndex);
         }
         else {
             newPlayer = new PlayerNaive(playerIndex);
